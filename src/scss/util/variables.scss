@@ -1,0 +1,20 @@
+// set breakpoints px values here
+// in CSS-media-query it will be converted in em
+$breakpoint-medium: 375;
+$breakpoint-large: 1150;
+$breakpoint-xlarge: 1440;
+
+// main sizes
+$edges-indents: 16;
+$body-min-size: 280;
+
+// transition rules
+$transition-all: all 150ms ease-in-out;
+// transition-property: all;
+// transition-duration: 0.3s;
+// transition-timing-function: ease;
+
+// Colors
+$almost-white: hsl(0, 0%, 98%);
+$medium-gray: hsl(0, 0%, 41%);
+$almost-black: hsl(0, 0%, 8%);

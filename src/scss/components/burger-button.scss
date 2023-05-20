@@ -1,0 +1,58 @@
+@use '../util' as *;
+
+#burger-button {
+    $color: $almost-black;
+    $height: 20;
+    $width: 32;
+    $elem-height: 3;
+    // --trans-time: 0.75s; // creating in js
+
+    @include reset-button;
+
+    position: relative;
+    background: transparent;
+    height: rem($height);
+    width: rem($width);
+
+    @include breakpoint('medium') {
+        display: none;
+    }
+  
+    &::before,
+    &::after {
+        background: $color;
+        backface-visibility: hidden;
+        content: '';
+        height: rem($elem-height);
+        left: 0;
+        transition: var(--trans-time);
+        width: rem($width);
+    }
+  
+    &::before {
+        box-shadow: $color 0 rem(
+            $height * .5 -  $elem-height * .25
+        ) 0 0;
+        position: absolute;
+        top: 0;
+    }
+  
+    &::after {
+        position: absolute;
+        top: calc(100% - 2px);
+    }
+  
+    &.opened {
+  
+        &::before {
+            box-shadow: transparent 0 0 0 0;
+            top: 50%;
+            transform: rotate(225deg);
+        }
+  
+        &::after {
+            top: 50%;
+            transform: rotate(315deg);
+        }
+    }
+}

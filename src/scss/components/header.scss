@@ -1,0 +1,203 @@
+@use '../util' as *;
+
+$row-indent: 55;
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: rem(20);
+    padding-bottom: rem(20);
+
+    &__logo {
+        font-size: rem(30);
+        font-weight: 700;
+        text-transform: lowercase;
+        
+        @include breakpoint(medium) {
+            margin-right: rem($row-indent);
+        }
+
+        a {
+            @include reset-link;
+        }
+    }
+
+    &__nav {
+        --menu-width: 65vw;
+        
+        @include breakpoint-down(small) {
+            padding: rem(80) rem(25);
+            background-color: #fff;
+            color: $medium-gray;
+            position: absolute;
+            width: var(--menu-width);
+            top: 0;
+            left: calc(100vw - var(--menu-width));
+            transform: translateX(var(--menu-width));
+        }
+        
+        &.opened {
+            transform: translateX(0);
+        }
+
+        @include breakpoint(medium) {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+
+    &__user-menu {
+        @include reset-list;
+    }
+}
+
+
+.nav {
+    
+    &__list {
+        @include reset-list;
+
+        @include breakpoint(medium) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+    
+    &__item {
+        margin-bottom: rem(20);
+        
+        @include breakpoint(medium) {
+            margin-bottom: 0;
+            margin-right: rem($row-indent);
+        }
+
+        &:not(:last-child) {
+            @include breakpoint(medium) {
+                margin-bottom: 0;
+            }
+        }
+
+        a {
+            @include reset-link;
+        }
+    }
+    
+    &__label {
+        position: relative;
+
+        &::before {
+            position: absolute;
+            content: url(../../img/icon-arrow-up.svg);
+            right: rem(-28);
+            
+            @include breakpoint(medium) {
+                top: rem(3);
+                right: rem(-18);
+                transform: rotate(180deg);
+            }
+        }
+    }
+    
+    &__inner-list {
+        @include reset-list;
+
+        @include breakpoint(medium) {
+            display: none;
+        }
+        
+        margin: rem(35) 0;
+        margin-left: rem(24);
+    }
+
+    &__inner-item {
+        text-transform: capitalize;
+    }
+    &__inner-item:not(:last-child) {
+        margin-bottom: rem(20);
+    }
+
+    // --------------- Links Icons ---------------
+    &__inner-item--icon {
+        $indend: 28;
+
+        margin-left: rem($indend);
+
+        a {
+            position: relative;
+
+            &::before {
+                position: absolute;
+                left: rem(-$indend);
+                bottom: rem(-2);
+            }
+        }
+    }
+    &__inner-item--icon:nth-child(1) a::before {
+        content: url(../../img/icon-todo.svg);
+    }
+    &__inner-item--icon:nth-child(2) a::before {
+        content: url(../../img/icon-calendar.svg);
+    }
+    &__inner-item--icon:nth-child(3) a::before {
+        content: url(../../img/icon-reminders.svg);
+    }
+    &__inner-item--icon:nth-child(4) a::before {
+        content: url(../../img/icon-planning.svg);
+    }
+    // -------------------------------------------
+}
+
+.user-menu {
+    // background-color: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding-top: rem(30);
+
+    @include breakpoint(medium) {
+        flex-direction: row;
+        padding-top: 0;
+    }
+
+    &__item {
+        @include reset-list;
+
+        a {
+            @include reset-link;
+        }
+
+        // login
+        &:nth-child(1) {
+            margin-bottom: rem(25);
+
+            @include breakpoint(medium) {
+                margin-bottom: 0;
+                margin-right: rem(40);
+            }
+        }
+
+        // register
+        &:nth-child(2) {
+            border: rem(2) solid $medium-gray;
+            border-radius: rem(12);
+            line-height: 2.3;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include breakpoint(medium) {
+                padding-left: rem(18);
+                padding-right: rem(18);
+            }
+        }
+    }
+}
