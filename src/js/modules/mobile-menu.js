@@ -1,3 +1,5 @@
+import { setTransitionTemperory } from "../utils/func.js";
+
 export default function createBurgerButton(menuElement, parentElement, animationTime) {
 
     // insert '<button id="burger-button"></button>' into given parent
@@ -26,13 +28,4 @@ export default function createBurgerButton(menuElement, parentElement, animation
     })
 
     return burgerElement;
-}
-
-
-function setTransitionTemperory(elem, time) {
-    elem.style.transition = `${time}s`;
-
-    setTimeout(() => {
-        elem.style.transition = '';
-    }, time * 1000);
 }

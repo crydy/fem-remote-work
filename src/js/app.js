@@ -1,10 +1,10 @@
 import setBrowserWEBPSupportMark from  './utils/webp-support.js';
-import { log } from  './utils/func.js';
 import createBurgerButton from  './modules/mobile-menu.js';
+import createFiguresBlock from './modules/figures.js';
 
 const MENU_ANIMATION_TIME = .5;
 
-// all the work after HTML loading
+// start the code after HTML loading
 window.addEventListener('DOMContentLoaded', () => {
 
     // WEBP support mark
@@ -15,4 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const parentElement = document.querySelector('.header');
     createBurgerButton(menuToManupulate, parentElement, MENU_ANIMATION_TIME);
 
+    // main page graphics
+    createFiguresBlock();
 });

@@ -9,6 +9,7 @@
 
     @include reset-button;
 
+    z-index: 3;
     position: relative;
     background: transparent;
     height: rem($height);

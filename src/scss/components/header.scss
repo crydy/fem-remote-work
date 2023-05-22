@@ -25,39 +25,36 @@ $row-indent: 55;
         }
     }
 
-    &__nav {
-        --menu-width: 65vw;
-        
-        @include breakpoint-down(small) {
-            padding: rem(80) rem(25);
-            background-color: #fff;
-            color: $medium-gray;
-            position: absolute;
-            width: var(--menu-width);
-            top: 0;
-            left: calc(100vw - var(--menu-width));
-            transform: translateX(var(--menu-width));
-        }
-        
-        &.opened {
-            transform: translateX(0);
-        }
-
-        @include breakpoint(medium) {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            width: 100%;
-        }
-    }
-
     &__user-menu {
         @include reset-list;
     }
 }
 
-
 .nav {
+    --menu-width: 65vw;
+    z-index: 2;
+
+    @include breakpoint-down(small) {
+        padding: rem(80) rem(25);
+        background-color: #fff;
+        color: $medium-gray;
+        position: absolute;
+        width: var(--menu-width);
+        top: 0;
+        left: calc(100vw - var(--menu-width));
+        transform: translateX(var(--menu-width));
+    }
+    
+    &.opened {
+        transform: translateX(0);
+    }
+
+    @include breakpoint(medium) {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
     
     &__list {
         @include reset-list;
@@ -154,7 +151,6 @@ $row-indent: 55;
 }
 
 .user-menu {
-    // background-color: red;
     display: flex;
     flex-direction: column;
     align-items: center;
