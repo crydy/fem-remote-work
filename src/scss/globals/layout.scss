@@ -2,14 +2,8 @@
 
 .limiter {
     padding: 0 rem($edges-indents);
-    // max-width: rem(1110);
-    margin: 0 auto;
-    // margin-bottom: rem(36);
     min-width: rem($body-min-size);
-
-    // @include breakpoint(large) {
-    //     padding: 0;
-    // }
+    margin: 0 auto;
 }
 
 .visually-hidden {

@@ -16,5 +16,5 @@ window.addEventListener('DOMContentLoaded', () => {
     createBurgerButton(menuToManupulate, parentElement, MENU_ANIMATION_TIME);
 
     // main page graphics
-    createFiguresBlock();
+    createFiguresBlock('make alive');
 });

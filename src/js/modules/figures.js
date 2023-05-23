@@ -1,6 +1,6 @@
 import * as f from  '../utils/func.js';
 
-export default function createFiguresBlock() {
+export default function createFiguresBlock(makeAlive) {
 
     const RECOLORING_FREQUENCY = 6000;
     const RECOLORING_DURATION = 3000; // no more then frequency
@@ -10,64 +10,66 @@ export default function createFiguresBlock() {
 
     createFiguresInParent(document.querySelector('.main'));
 
-    const figures = document.querySelectorAll('.main__figure');
+    if (makeAlive) {
+        const figures = document.querySelectorAll('.main__figure');
 
-    setInterval(() => {
+        setInterval(() => {
 
-        const figuresAtOnce = f.randomInteger(1, SIMULTANIOUSLY_ALLOWED);
-        const figuresToMove = new Set();
+            const figuresAtOnce = f.randomInteger(1, SIMULTANIOUSLY_ALLOWED);
+            const figuresToMove = new Set();
 
-        for (let i = 0; i < figuresAtOnce; i++) {
+            for (let i = 0; i < figuresAtOnce; i++) {
 
-            const randomFigureIndex = f.randomInteger(0, figures.length - 1);
-            const figure = figures[randomFigureIndex];
-            const index = getElementIndex(figure);
+                const randomFigureIndex = f.randomInteger(0, figures.length - 1);
+                const figure = figures[randomFigureIndex];
+                const index = getElementIndex(figure);
 
-            if (!figure.transitionMode && !figure.timeout) {
-                figuresToMove.add({index: index, element: figure})
+                if (!figure.transitionMode && !figure.timeout) {
+                    figuresToMove.add({index: index, element: figure})
+                }
             }
-        }
 
-        figuresToMove.forEach((figure) => {
+            figuresToMove.forEach((figure) => {
 
-            figure.element.timeout = true;
+                figure.element.timeout = true;
 
-            // random time to start movement - less than movement frequency
-            let startMovementInTime = MOVEMENT_FREQUENCY * (f.randomInteger(0, 100) / 100);
+                // random time to start movement - less than movement frequency
+                let startMovementInTime = MOVEMENT_FREQUENCY * (f.randomInteger(0, 100) / 100);
 
-            setTimeout(() => {
-
-                makeTransitionedChange(
-                    figure.element,
-                    `main__figure${figure.index}--changed`,
-                    f.randomInteger(...MOVEMENT_DURATION_RANGE),
-                    'transform'
-                );
-
-                // prevent this element from movement until next iteration
                 setTimeout(() => {
-                    figure.element.timeout = false;
-                }, MOVEMENT_FREQUENCY - startMovementInTime)
 
-            }, startMovementInTime);
-        })
-    }, MOVEMENT_FREQUENCY);
+                    makeTransitionedChange(
+                        figure.element,
+                        `main__figure${figure.index}--changed`,
+                        f.randomInteger(...MOVEMENT_DURATION_RANGE),
+                        'transform'
+                    );
+
+                    // prevent this element from movement until next iteration
+                    setTimeout(() => {
+                        figure.element.timeout = false;
+                    }, MOVEMENT_FREQUENCY - startMovementInTime)
+
+                }, startMovementInTime);
+            })
+        }, MOVEMENT_FREQUENCY);
 
 
-    const colorableFigures = document.querySelectorAll('.main__figure:not(.not-colorable)');
+        const colorableFigures = document.querySelectorAll('.main__figure:not(.not-colorable)');
 
-    setInterval(() => {
-        const randomFigure = colorableFigures[f.randomInteger(0, colorableFigures.length - 1)];
-        const isFree = !randomFigure.transitionMode && !randomFigure.timeout;
+        setInterval(() => {
+            const randomFigure = colorableFigures[f.randomInteger(0, colorableFigures.length - 1)];
+            const isFree = !randomFigure.transitionMode && !randomFigure.timeout;
 
-        if (isFree) {
-            const randomColor = filterColorsStock()[f.randomInteger(0, filterColorsStock().length - 1)];
+            if (isFree) {
+                const randomColor = filterColorsStock()[f.randomInteger(0, filterColorsStock().length - 1)];
 
-            if (!randomFigure.transitionMode) {
-                changeStyle(randomFigure, 'filter', randomColor, RECOLORING_DURATION);
+                if (!randomFigure.transitionMode) {
+                    changeStyle(randomFigure, 'filter', randomColor, RECOLORING_DURATION);
+                }
             }
-        }
-    }, RECOLORING_FREQUENCY);
+        }, RECOLORING_FREQUENCY);
+    }
 }
 
 

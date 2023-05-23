@@ -1,3 +1,6 @@
+@use '../util/variables.scss' as *;
+@use '../util/functions.scss' as *;
+
 @mixin reset-button {
     margin: 0;
     padding: 0;
@@ -27,4 +30,32 @@
     &:visited {
         color: inherit;
     }
+}
+
+@mixin button {
+    display: block;
+    border: rem(2) solid $medium-gray;
+    border-radius: rem(12);
+    line-height: 2.3;
+    text-align: center;
+}
+
+@mixin button-hover {
+    border-color: black;
+    background-color: white;
+    color: black;
+}
+
+@mixin buttun-paddings {
+    padding-left: rem(20);
+    padding-right: rem(20);
+}
+
+@mixin transition($property: 'all') {
+    transition: #{$property} $trans-dur $trans-tf;
+}
+
+@mixin limit-max-width {
+    max-width: rem($body-max-size);
+    margin: 0 auto;
 }
