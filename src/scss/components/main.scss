@@ -74,6 +74,9 @@
         &:hover {
             @include button-hover;
         }
+        &:focus {
+            outline: rem(2) solid $medium-gray;
+        }
     }
 
 

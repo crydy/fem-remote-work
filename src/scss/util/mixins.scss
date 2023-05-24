@@ -51,7 +51,7 @@
     padding-right: rem(20);
 }
 
-@mixin transition($property: 'all') {
+@mixin transition($property: 'all', $trans-dur: $trans-dur) {
     transition: #{$property} $trans-dur $trans-tf;
 }
 

@@ -1,18 +1,28 @@
 @use '../util' as *;
 
 $row-indent: 55;
+$padding-top: rem(20);
 
 .header {
-    $padding-top: rem(20);
+    
     --padding-top: #{$padding-top};
-
+    --nav-bg-color: #fff;
+    --sublist-transition:
+        max-height 0.01s ease,
+        opacity 0.5s ease,
+        padding 0.5s ease,
+        margin 0.5s ease;
+    --menu-width: 65vw;
+    
+    
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
+    
     padding-top: var(--padding-top);
     padding-bottom: rem(20);
+    user-select: none;
 
     @include breakpoint(medium) {
         flex-direction: column;
@@ -50,9 +60,11 @@ $row-indent: 55;
     }
 
     &__nav {
-
+        min-height: 100vh;
+        
         @include breakpoint(medium) {
             margin-top: rem(25);
+            min-height: auto;
         }
         @include breakpoint(large) {
             margin-top: 0;
@@ -75,11 +87,10 @@ $row-indent: 55;
 
 
 .nav {
-    --menu-width: 65vw;
     z-index: 2;
 
     padding: rem(80) rem(25);
-    background-color: #fff;
+    background-color: var(--nav-bg-color); // HERE
     color: $medium-gray;
     position: absolute;
     width: var(--menu-width);
@@ -104,14 +115,11 @@ $row-indent: 55;
 
     @include breakpoint(medium) {
         display: flex;
-        // flex-direction: row;
         justify-content: space-between;
+        flex-direction: column;
         width: 100%;
     }
-
-    @include breakpoint(medium) {
-        flex-direction: column;
-    }
+    
     @include breakpoint(large) {
         flex-direction: row;
     }
@@ -126,12 +134,11 @@ $row-indent: 55;
             justify-content: space-between;
             max-width: rem(600);
         }
-        @include breakpoint(large) {
-        }
     }
     
     &__item {
         margin-bottom: rem(20);
+        position: relative;
         
         @include breakpoint(medium) {
             margin-bottom: 0;
@@ -142,38 +149,104 @@ $row-indent: 55;
 
         a {
             @include reset-link;
+            @include transition(color);
+            &:hover,
+            &:focus {
+                color: $almost-black;
+            }
+            &:focus {
+                outline: none;
+                text-decoration: underline;
+            }
+        }
+
+        @include transition(color);
+        &:hover,
+        &:focus {
+            color: $almost-black;
+        }
+        &:focus {
+            outline: none;
+            text-decoration: underline;
         }
     }
     
     &__label {
-        position: relative;
+        --icon-distance: 26%;
 
-        &::before {
-            position: absolute;
-            content: url(../../img/icon-arrow-up.svg);
-            right: rem(-28);
-            
-            @include breakpoint(medium) {
-                top: rem(3);
-                right: rem(-18);
-                transform: rotate(180deg);
-            }
+        @include breakpoint(medium) {
+            --icon-distance: 12%;
         }
+
+        position: relative;
+        user-select: none;
+        cursor: pointer;
+
+        // --------------- arrow icons ---------------
+        &::before,
+        &::after {
+            @include transition(transform);
+            content: "";
+            background-color: $medium-gray;
+            position: absolute;
+            width: rem(8);
+            height: rem(2);
+            left:calc(100% + var(--icon-distance));
+            top: rem(7);
+        }
+        &::before {
+            transform: rotate(45deg);
+        }
+        &::after {
+            transform: rotate(-45deg);
+            left:calc(106.5% + var(--icon-distance));
+        }
+        &.opened::before {
+            transform: rotate(-45deg);
+        }
+        &.opened::after {
+            transform: rotate(45deg);
+        }
+        // -------------------------------------------
     }
     
     &__inner-list {
         @include reset-list;
 
         @include breakpoint(medium) {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-left: 0;
+
+            background-color: #fff;
         }
         
-        margin: rem(35) 0;
         margin-left: rem(24);
+
+        overflow: hidden;
+        opacity: 0;
+        max-height: 0;
+        transition: var(--sublist-transition);
+
+        &.opened {
+            margin-top: rem(35);
+            margin-bottom: rem(35);
+
+            opacity: 1;
+            max-height: rem(2000);
+
+            @include breakpoint(medium) {
+                padding: rem(20);
+                border-radius: rem(10);
+                box-shadow: 0px 0px 46px 0px rgba(0, 0, 0, 0.25);
+            }
+        }
     }
 
     &__inner-item {
         text-transform: capitalize;
+        white-space: nowrap;
     }
     &__inner-item:not(:last-child) {
         margin-bottom: rem(20);
@@ -230,6 +303,7 @@ $row-indent: 55;
             @include reset-link;
         }
 
+
         // login
         &:nth-child(1) {
             margin-bottom: rem(25);
@@ -237,6 +311,18 @@ $row-indent: 55;
             @include breakpoint(medium) {
                 margin-bottom: 0;
                 margin-right: rem(40);
+            }
+
+            a {
+                @include transition(color);
+                &:hover,
+                &:focus {
+                    color: $almost-black;
+                }
+                &:focus {
+                    outline: none;
+                    text-decoration: underline;
+                }
             }
         }
 
@@ -249,6 +335,10 @@ $row-indent: 55;
 
                 @include breakpoint(medium) {
                     @include buttun-paddings;
+                }
+
+                &:hover {
+                    @include button-hover;
                 }
             }
         }
