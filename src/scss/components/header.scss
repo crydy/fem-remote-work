@@ -1,19 +1,18 @@
 @use '../util' as *;
 
-$row-indent: 55;
-$padding-top: rem(20);
+$desktop-menu-items-indent: 55;
+$submenu-icon-distance: 28;
 
 .header {
-    
-    --padding-top: #{$padding-top};
+    --menu-width: 65vw;
+    --submenu-arrow-icon-distance: 26%;
+    --padding-top: #{rem(20)};
     --nav-bg-color: #fff;
     --sublist-transition:
         max-height 0.01s ease,
         opacity 0.5s ease,
         padding 0.5s ease,
         margin 0.5s ease;
-    --menu-width: 65vw;
-    
     
     display: flex;
     flex-direction: row;
@@ -28,6 +27,7 @@ $padding-top: rem(20);
         flex-direction: column;
         position: relative;
     }
+
     @include breakpoint(large) {
         flex-direction: row;
         @include limit-max-width;
@@ -41,33 +41,24 @@ $padding-top: rem(20);
         @include breakpoint(medium) {
             align-self: start;
         }
+
         @include breakpoint(large) {
-            margin-right: rem($row-indent);
+            margin-right: rem($desktop-menu-items-indent);
         }
 
         a {
             @include reset-link;
-            @include transition(color);
+            @include transition(filter);
             display: block;
-            
-            &:hover {
-                color: var(--logo-hover);
-            }
-            @include breakpoint(medium) {
-                transform: translateY(.15em);
-            }
-        }
-    }
 
-    &__nav {
-        min-height: 100vh;
-        
-        @include breakpoint(medium) {
-            margin-top: rem(25);
-            min-height: auto;
-        }
-        @include breakpoint(large) {
-            margin-top: 0;
+            @include breakpoint(medium) {
+                padding-top: rem(.12);
+            }
+
+            &:focus {
+                outline-offset: rem(4);
+                border-radius: rem(7);
+            }
         }
     }
 
@@ -87,22 +78,35 @@ $padding-top: rem(20);
 
 
 .nav {
-    z-index: 2;
-
-    padding: rem(80) rem(25);
-    background-color: var(--nav-bg-color); // HERE
-    color: $medium-gray;
     position: absolute;
+    z-index: 2;
+    transform: translateX(var(--menu-width));
+    min-height: 100vh;
+    
+    padding: rem(80) rem(25);
     width: var(--menu-width);
     top: 0;
     left: calc(100vw - var(--menu-width));
-    transform: translateX(var(--menu-width));
-
+    background-color: var(--nav-bg-color);
+    color: $medium-gray;
+    
     @include breakpoint(medium) {
-        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+
         position: static;
-        width: auto;
         transform: none;
+        min-height: auto;
+
+        margin-top: rem(25);
+        padding: 0;
+        width: 100%;
+    }
+
+    @include breakpoint(large) {
+        flex-direction: row;
+        margin-top: 0;
     }
     
     &.opened {
@@ -111,17 +115,6 @@ $padding-top: rem(20);
         @include breakpoint(medium) {
             transform: none;
         }
-    }
-
-    @include breakpoint(medium) {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    @include breakpoint(large) {
-        flex-direction: row;
     }
     
     &__list {
@@ -132,55 +125,54 @@ $padding-top: rem(20);
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+
             max-width: rem(600);
         }
     }
     
     &__item {
+        @include transition(color);
         margin-bottom: rem(20);
         position: relative;
         
         @include breakpoint(medium) {
             margin-bottom: 0;
         }
+
         @include breakpoint(large) {
-            margin-right: rem($row-indent);
+            margin-right: rem($desktop-menu-items-indent);
+        }
+
+        &:hover,
+        &:focus {
+            color: $almost-black;
+            outline-offset: rem(4);
         }
 
         a {
             @include reset-link;
             @include transition(color);
+
             &:hover,
             &:focus {
                 color: $almost-black;
             }
+
             &:focus {
                 outline: none;
                 text-decoration: underline;
             }
         }
-
-        @include transition(color);
-        &:hover,
-        &:focus {
-            color: $almost-black;
-        }
-        &:focus {
-            outline: none;
-            text-decoration: underline;
-        }
     }
     
     &__label {
-        --icon-distance: 26%;
-
-        @include breakpoint(medium) {
-            --icon-distance: 12%;
-        }
-
         position: relative;
         user-select: none;
         cursor: pointer;
+
+        @include breakpoint(medium) {
+            --submenu-arrow-icon-distance: 12%;
+        }
 
         // --------------- arrow icons ---------------
         &::before,
@@ -191,19 +183,23 @@ $padding-top: rem(20);
             position: absolute;
             width: rem(8);
             height: rem(2);
-            left:calc(100% + var(--icon-distance));
+            left:calc(100% + var(--submenu-arrow-icon-distance));
             top: rem(7);
         }
+
         &::before {
             transform: rotate(45deg);
         }
+        
         &::after {
             transform: rotate(-45deg);
-            left:calc(106.5% + var(--icon-distance));
+            left:calc(106.5% + var(--submenu-arrow-icon-distance));
         }
+
         &.opened::before {
             transform: rotate(-45deg);
         }
+
         &.opened::after {
             transform: rotate(45deg);
         }
@@ -212,6 +208,13 @@ $padding-top: rem(20);
     
     &__inner-list {
         @include reset-list;
+
+        margin-left: rem(24);
+
+        overflow: hidden;
+        opacity: 0;
+        max-height: 0;
+        transition: var(--sublist-transition);
 
         @include breakpoint(medium) {
             position: absolute;
@@ -222,13 +225,6 @@ $padding-top: rem(20);
             background-color: #fff;
         }
         
-        margin-left: rem(24);
-
-        overflow: hidden;
-        opacity: 0;
-        max-height: 0;
-        transition: var(--sublist-transition);
-
         &.opened {
             margin-top: rem(35);
             margin-bottom: rem(35);
@@ -254,29 +250,31 @@ $padding-top: rem(20);
 
     // --------------- Links Icons ---------------
     &__inner-item--icon {
-        $indend: 28;
-
-        margin-left: rem($indend);
+        margin-left: rem($submenu-icon-distance);
 
         a {
             position: relative;
 
             &::before {
                 position: absolute;
-                left: rem(-$indend);
+                left: rem(-$submenu-icon-distance);
                 bottom: rem(-2);
             }
         }
     }
+
     &__inner-item--icon:nth-child(1) a::before {
         content: url(../../img/icon-todo.svg);
     }
+
     &__inner-item--icon:nth-child(2) a::before {
         content: url(../../img/icon-calendar.svg);
     }
+
     &__inner-item--icon:nth-child(3) a::before {
         content: url(../../img/icon-reminders.svg);
     }
+
     &__inner-item--icon:nth-child(4) a::before {
         content: url(../../img/icon-planning.svg);
     }
@@ -303,7 +301,6 @@ $padding-top: rem(20);
             @include reset-link;
         }
 
-
         // login
         &:nth-child(1) {
             margin-bottom: rem(25);
@@ -315,10 +312,12 @@ $padding-top: rem(20);
 
             a {
                 @include transition(color);
+
                 &:hover,
                 &:focus {
                     color: $almost-black;
                 }
+
                 &:focus {
                     outline: none;
                     text-decoration: underline;

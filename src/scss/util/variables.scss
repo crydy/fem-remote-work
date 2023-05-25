@@ -1,7 +1,5 @@
-// set breakpoints px values here
-// in CSS-media-query it will be converted in em
-$breakpoint-medium: 400;
-// $breakpoint-large: 1150;
+// breakpoints in px (px => em)
+$breakpoint-medium: 400; 
 $breakpoint-large: 900;
 $breakpoint-xlarge: 1440;
 
@@ -19,4 +17,3 @@ $transition-all: all $trans-dur $trans-tf;
 $almost-white: hsl(0, 0%, 98%);
 $medium-gray: hsl(0, 0%, 41%);
 $almost-black: hsl(0, 0%, 8%);
-$logo-hover: $medium-gray;

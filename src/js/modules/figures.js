@@ -1,12 +1,18 @@
-import * as f from  '../utils/func.js';
+import {
+    randomInteger,
+    getColorInFilterFormat,
+    setTransitionTemperory
+} from  '../utils/functions.js';
 
-export default function createFiguresBlock(makeAlive) {
 
-    const RECOLORING_FREQUENCY = 6000;
-    const RECOLORING_DURATION = 3000; // no more then frequency
-    const MOVEMENT_FREQUENCY = 4000;
-    const MOVEMENT_DURATION_RANGE = [1500, 4500]; // no more then frequency
-    const SIMULTANIOUSLY_ALLOWED = 2;
+export default function createFiguresBlock(
+    recolorFrequency,
+    recolorDuration,
+    moveFrequency,
+    moveDurationRange,
+    maxAtOnce,
+    makeAlive
+) {
 
     createFiguresInParent(document.querySelector('.main'));
 
@@ -15,12 +21,12 @@ export default function createFiguresBlock(makeAlive) {
 
         setInterval(() => {
 
-            const figuresAtOnce = f.randomInteger(1, SIMULTANIOUSLY_ALLOWED);
+            const figuresAtOnce = randomInteger(1, maxAtOnce);
             const figuresToMove = new Set();
 
             for (let i = 0; i < figuresAtOnce; i++) {
 
-                const randomFigureIndex = f.randomInteger(0, figures.length - 1);
+                const randomFigureIndex = randomInteger(0, figures.length - 1);
                 const figure = figures[randomFigureIndex];
                 const index = getElementIndex(figure);
 
@@ -34,52 +40,51 @@ export default function createFiguresBlock(makeAlive) {
                 figure.element.timeout = true;
 
                 // random time to start movement - less than movement frequency
-                let startMovementInTime = MOVEMENT_FREQUENCY * (f.randomInteger(0, 100) / 100);
+                let startMovementInTime = moveFrequency * (randomInteger(0, 100) / 100);
 
                 setTimeout(() => {
 
                     makeTransitionedChange(
                         figure.element,
                         `main__figure${figure.index}--changed`,
-                        f.randomInteger(...MOVEMENT_DURATION_RANGE),
+                        randomInteger(...moveDurationRange),
                         'transform'
                     );
 
                     // prevent this element from movement until next iteration
                     setTimeout(() => {
                         figure.element.timeout = false;
-                    }, MOVEMENT_FREQUENCY - startMovementInTime)
+                    }, moveFrequency - startMovementInTime)
 
                 }, startMovementInTime);
             })
-        }, MOVEMENT_FREQUENCY);
+        }, moveFrequency);
 
 
         const colorableFigures = document.querySelectorAll('.main__figure:not(.not-colorable)');
 
         setInterval(() => {
-            const randomFigure = colorableFigures[f.randomInteger(0, colorableFigures.length - 1)];
+            const randomFigure = colorableFigures[randomInteger(0, colorableFigures.length - 1)];
             const isFree = !randomFigure.transitionMode && !randomFigure.timeout;
 
             if (isFree) {
-                const randomColor = filterColorsStock()[f.randomInteger(0, filterColorsStock().length - 1)];
+                const randomColor = getColorInFilterFormat();
 
                 if (!randomFigure.transitionMode) {
-                    changeStyle(randomFigure, 'filter', randomColor, RECOLORING_DURATION);
+                    changeStyle(randomFigure, 'filter', randomColor, recolorDuration);
                 }
             }
-        }, RECOLORING_FREQUENCY);
+        }, recolorFrequency);
     }
 }
 
-
 function changeStyle(element, CSSprop, value, durationTime) {
-    f.setTransitionTemperory(element, durationTime / 1000, CSSprop);
+    setTransitionTemperory(element, durationTime / 1000, CSSprop);
     element.style[CSSprop] = value;
 }
 
 function makeTransitionedChange(element, className, durationTime, transitionProperty) {
-    f.setTransitionTemperory(element, durationTime / 1000, transitionProperty);
+    setTransitionTemperory(element, durationTime / 1000, transitionProperty);
     element.classList.toggle(className);
 }
 
@@ -113,22 +118,6 @@ function getElementIndex(element) {
     function stringifyNumber(n) {
         return (n < 10) ? `0${n}` :`${n}`;
     }
-}
-
-// some colors for css-filter-property format
-function filterColorsStock() {
-    return [
-        'invert(14%) sepia(90%) saturate(1155%) hue-rotate(186deg) brightness(104%) contrast(95%);',
-        'invert(79%) sepia(18%) saturate(1938%) hue-rotate(336deg) brightness(93%) contrast(89%)',
-        'invert(9%) sepia(24%) saturate(7453%) hue-rotate(340deg) brightness(95%) contrast(103%)',
-        'invert(45%) sepia(100%) saturate(343%) hue-rotate(123deg) brightness(94%) contrast(78%)',
-        'invert(37%) sepia(51%) saturate(368%) hue-rotate(33deg) brightness(93%) contrast(90%)',
-        'invert(68%) sepia(36%) saturate(292%) hue-rotate(246deg) brightness(89%) contrast(89%)',
-        'invert(82%) sepia(55%) saturate(1594%) hue-rotate(295deg) brightness(110%) contrast(109%)',
-        'invert(70%) sepia(13%) saturate(491%) hue-rotate(353deg) brightness(87%) contrast(87%)',
-        'invert(36%) sepia(78%) saturate(6701%) hue-rotate(343deg) brightness(90%) contrast(93%)',
-        'invert(88%) sepia(56%) saturate(426%) hue-rotate(326deg) brightness(96%) contrast(86%)',
-    ]
 }
 
 function createFiguresInParent(parent) {

@@ -17,5 +17,3 @@ export default function setBrowserWEBPSupportMark() {
         document.documentElement.classList.add(className);
     });
 }
-
-setBrowserWEBPSupportMark();
