@@ -264,19 +264,19 @@ $submenu-icon-distance: 28;
     }
 
     &__inner-item--icon:nth-child(1) a::before {
-        content: url(../../img/icon-todo.svg);
+        content: url('../img/icon-todo.svg');
     }
 
     &__inner-item--icon:nth-child(2) a::before {
-        content: url(../../img/icon-calendar.svg);
+        content: url('../img/icon-calendar.svg');
     }
 
     &__inner-item--icon:nth-child(3) a::before {
-        content: url(../../img/icon-reminders.svg);
+        content: url('../img/icon-reminders.svg');
     }
 
     &__inner-item--icon:nth-child(4) a::before {
-        content: url(../../img/icon-planning.svg);
+        content: url('../img/icon-planning.svg');
     }
     // -------------------------------------------
 }
